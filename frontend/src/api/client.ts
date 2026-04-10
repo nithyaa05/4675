@@ -2,8 +2,9 @@
  * Thin HTTP client for Flask (or other) REST API.
  * Set VITE_API_BASE_URL e.g. http://localhost:5000/api
  */
-
-const base = () => (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
+// const VITE_API_BASE_URL = 'http://localhost:5000/api'
+//const base = () => (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
+const base = () => 'http://localhost:5000/api'.replace(/\/$/, '')
 
 export class ApiError extends Error {
   status: number

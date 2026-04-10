@@ -26,10 +26,9 @@ export function PeersDirectoryPage() {
     if (!q) return peers
     return peers.filter((p) => {
       const blob = [
-        p.displayName,
+        `${p.firstName} ${p.lastName}`,
         p.major,
         p.bio ?? '',
-        p.workingStyle,
         ...(p.skills ?? []),
         p.email ?? '',
       ]
@@ -70,16 +69,13 @@ export function PeersDirectoryPage() {
       <ul className="peer-grid">
         {filtered.map((p) => (
           <li key={p.userId} className="peer-card">
-            <h2 className="peer-card__name">{p.displayName}</h2>
+            <h2 className="peer-card__name">{`${p.firstName} ${p.lastName}`}</h2>
             <p className="peer-card__meta">{p.major}</p>
             {p.email ? (
               <p className="peer-card__email">
                 <a href={`mailto:${p.email}`}>{p.email}</a>
               </p>
             ) : null}
-            <p className="peer-card__style">
-              <strong>Working style:</strong> {p.workingStyle}
-            </p>
             {p.availabilitySummary ? (
               <p className="peer-card__avail">
                 <strong>Availability:</strong> {p.availabilitySummary}

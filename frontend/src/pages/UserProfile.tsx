@@ -9,28 +9,29 @@ import {
   createEmptyWeeklyAvailability,
   normalizeWeeklyAvailability,
 } from '../lib/availability'
-import { MOCK_ROSTER, SKILL_OPTIONS, WORKING_STYLES } from '../mocks/seedData'
+import { MOCK_ROSTER, SKILL_OPTIONS } from '../mocks/seedData'
 
 const emptyProfile: UserProfile = {
-  displayName: '',
+  firstName: '',
+  lastName: '',
   email: '',
   major: '',
   skills: [],
   weeklyAvailability: createEmptyWeeklyAvailability(),
-  workingStyle: WORKING_STYLES[0] ?? '',
+  // workingStyle: WORKING_STYLES[0] ?? '',
   preferredPeerIds: [],
   bio: '',
 }
 
 function validate(p: UserProfile): string[] {
   const errs: string[] = []
-  if (!p.displayName.trim()) errs.push('Display name is required.')
+  if (!p.firstName.trim() && !p.lastName.trim()) errs.push('First and last name is required.')
   if (!p.email.trim()) errs.push('Email is required.')
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))
     errs.push('Enter a valid email (GT email when auth is enabled).')
   if (!p.major.trim()) errs.push('Major or program is required.')
   if (p.skills.length === 0) errs.push('Select at least one skill.')
-  if (!p.workingStyle) errs.push('Choose a working style.')
+  // if (!p.workingStyle) errs.push('Choose a working style.')
   if (countSelectedSlots(p.weeklyAvailability) === 0)
     errs.push(
       'Select at least one half-hour slot when you are free (any day—you do not need to fill every day).'
@@ -170,16 +171,29 @@ export function UserProfilePage() {
         )}
 
         <label className="field">
-          <span>Display name</span>
+          <span>First Name</span>
           <input
             required
-            value={profile.displayName}
+            value={profile.firstName}
             onChange={(e) =>
-              setProfile((p) => ({ ...p, displayName: e.target.value }))
+              setProfile((p) => ({ ...p, firstName: e.target.value }))
+            }
+            autoComplete="name"
+          />
+        
+        </label>
+                <label className="field">
+          <span>Last Name</span>
+          <input
+            required
+            value={profile.lastName}
+            onChange={(e) =>
+              setProfile((p) => ({ ...p, lastName: e.target.value }))
             }
             autoComplete="name"
           />
         </label>
+
 
         <label className="field">
           <span>Email</span>
@@ -241,7 +255,7 @@ export function UserProfilePage() {
           />
         </fieldset>
 
-        <label className="field">
+        {/* <label className="field">
           <span>Working style</span>
           <select
             value={profile.workingStyle}
@@ -255,7 +269,7 @@ export function UserProfilePage() {
               </option>
             ))}
           </select>
-        </label>
+        </label> */}
 
         <fieldset className="field">
           <legend>Peer preferences (optional)</legend>
