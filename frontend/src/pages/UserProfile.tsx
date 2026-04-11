@@ -58,6 +58,10 @@ export function UserProfilePage() {
   }, [errors])
 
   useEffect(() => {
+    setProfile(emptyProfile)
+}, [])
+
+  useEffect(() => {
     let cancelled = false
     ;(async () => {
       const existing = await api.getUserProfile()

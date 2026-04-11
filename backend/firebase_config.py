@@ -21,15 +21,29 @@ docs = users_collection.stream()
 count = len(list(docs))
 
 
-@app.route('/api/users/me', methods=['PUT'])
+@app.route('/api/users/me', methods=['POST'])
 def save_user_profile():
     profile = request.get_json()
-    print(profile)
+    #print(profile)
+
+    users_collection = db.collection('test')
+    docs = users_collection.stream()
+    count = len(list(docs))
+
+
     # Create a new document with auto-generated ID
     doc_ref = db.collection('test').document('user_' + str(count))  # Generate a unique ID based on the count
     # doc_ref.set('user_id', "user_")  # Store the generated ID in the document
     doc_ref.set(profile)
     return jsonify({**profile, 'id': doc_ref.id}), 200
+
+@app.route('/api/users/me', methods=['GET'])
+def get_user_profile():
+    doc = db.collection('test').document('user_' + str(count)).get()  # Use the generated ID
+    if doc.exists:
+        return jsonify(doc.to_dict())
+    return jsonify(None), 404
+
     
 # @app.route('/api/users/me', methods=['GET'])
 # def get_user_profile():
