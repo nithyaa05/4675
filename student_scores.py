@@ -63,7 +63,7 @@ def pairwise_compatibility_in_project(proj_id):
             # similarity_matrix[f'({userA_id}, {userB_id})'] = user_compatibility_score(userA_id, userB_id)
             similarity_matrix[f'({int(userA_id.split('_')[1])}, {int(userB_id.split('_')[1])})'] = user_compatibility_score(userA_id, userB_id)
 
-# Compatibility Scores between
+# Pairwise Compatibility Scores
 for i in range(0,5): # 5 projects
     proj_id = f'proj_{i}'
     pairwise_scores = pairwise_compatibility_in_project(proj_id)
