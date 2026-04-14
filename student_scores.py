@@ -3,8 +3,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import jaccard_score
 import json
 import project_scores
-from sklearn.cluster import AgglomerativeClustering
-import math
 
 with open('user_feature_vectors.json') as file:
     data = json.load(file)
