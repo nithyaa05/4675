@@ -3,6 +3,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import jaccard_score
 import json
 import project_scores
+from sklearn.cluster import AgglomerativeClustering
+import math
 
 with open('user_feature_vectors.json') as file:
     data = json.load(file)
@@ -42,6 +44,8 @@ def user_compatibility_score(userA_id, userB_id):
     final_score = float(final_score)
     return final_score if final_score > 0 else 0.0
 
+
+
 # proj_assignments = {
 #  'proj_0': ['user_3', 'user_8', 'user_12', 'user_17', 'user_20', 'user_23'], 
 #  'proj_1': ['user_0', 'user_1', 'user_9', 'user_10'], 
@@ -50,10 +54,11 @@ def user_compatibility_score(userA_id, userB_id):
 #  'proj_4': ['user_14', 'user_18', 'user_22']
 # }
 
-similarity_matrix = {}
+
 
 # Compute pairwise compatibility scores between each user in a project
 def pairwise_compatibility_in_project(proj_id):
+    pairwise_scores = {}
     users = project_scores.proj_assignments[proj_id]
     n = len(users)
     for i in range(0, n):
@@ -61,14 +66,17 @@ def pairwise_compatibility_in_project(proj_id):
         for j in range(i+1, n): 
             userB_id = users[j]
             # similarity_matrix[f'({userA_id}, {userB_id})'] = user_compatibility_score(userA_id, userB_id)
-            similarity_matrix[f'({int(userA_id.split('_')[1])}, {int(userB_id.split('_')[1])})'] = user_compatibility_score(userA_id, userB_id)
+            pairwise_scores[f'({int(userA_id.split('_')[1])}, {int(userB_id.split('_')[1])})'] = user_compatibility_score(userA_id, userB_id)
+    return pairwise_scores
 
-# Pairwise Compatibility Scores
+
+# Compatibility Scores between
 for i in range(0,5): # 5 projects
     proj_id = f'proj_{i}'
     pairwise_scores = pairwise_compatibility_in_project(proj_id)
     # print(proj_id)
     # print(pairwise_scores)
+
 
 # Similarity Matrix
 def construct_similarity_matrix(users):
@@ -85,7 +93,9 @@ def construct_similarity_matrix(users):
                 similarity_matrix[i][j] = 1.0
     return similarity_matrix
 
-# Clustering students using a Greedy Algorithm + Group Size Balancing
+
+
+# Clustering Students into Groups within Project Assignments: Greedy Algorithm + Group Balancing
 def cluster_students(users):
     similarity_matrix = construct_similarity_matrix(users)
 
@@ -106,7 +116,7 @@ def cluster_students(users):
         if len(unassigned_users) == 0:
             break
         
-        # Choose random seed user to build group around
+        # Choose seed user to build group around
         seed_user = max(unassigned_users, key=lambda i: sum(similarity_matrix[i][j] for j in unassigned_users))
         unassigned_users.remove(seed_user)
 
@@ -142,3 +152,4 @@ for proj_id, users in project_scores.proj_assignments.items():
     print(f'\n{proj_id}:')
     for group_id, members in enumerate(groups):
         print(f'Group {group_id}: {members}' )
+
