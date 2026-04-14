@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { UserProfile } from '../types'
+import type { UserProfile, TeamMemberPreview } from '../types'
 import * as api from '../api/peermatchApi'
 import { ChipToggle } from '../components/ChipToggle'
 import { SaveSuccessPanel } from '../components/SaveSuccessPanel'
@@ -9,7 +9,7 @@ import {
   createEmptyWeeklyAvailability,
   normalizeWeeklyAvailability,
 } from '../lib/availability'
-import { MOCK_ROSTER, SKILL_OPTIONS } from '../mocks/seedData'
+import { SKILL_OPTIONS } from '../mocks/seedData'
 
 const emptyProfile: UserProfile = {
   firstName: '',
@@ -46,6 +46,7 @@ export function UserProfilePage() {
   const [saveError, setSaveError] = useState<string | null>(null)
   const [showThankYou, setShowThankYou] = useState(false)
   const [errors, setErrors] = useState<string[]>([])
+  const [users, setUsers] = useState<TeamMemberPreview[]>([])
   const errorAnchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -76,7 +77,11 @@ export function UserProfilePage() {
           weeklyAvailability: normalizeWeeklyAvailability(existing),
         })
       }
-      if (!cancelled) setLoading(false)
+      const allUsers = await api.getAllUsers()
+      if (!cancelled) {
+        setUsers(allUsers)
+        setLoading(false)
+      }
     })()
     return () => {
       cancelled = true
@@ -282,7 +287,7 @@ export function UserProfilePage() {
             as a soft constraint alongside skills and availability.
           </p>
           <div className="chip-grid">
-            {MOCK_ROSTER.map((r) => (
+            {users.map((r) => (
               <ChipToggle
                 key={r.userId}
                 label={`${r.displayName} (${r.major})`}

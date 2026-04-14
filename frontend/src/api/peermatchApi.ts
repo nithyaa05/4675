@@ -6,19 +6,25 @@ import type {
   ProjectProfile,
   PublicUserProfile,
   TeamAssignment,
+  TeamMemberPreview,
   UserProfile,
 } from '../types'
 
+import * as mock from '../mocks/peermatchMock'
+
+
 const BASE_URL = 'http://localhost:5000/api'
+
 
 // -------------------- USER --------------------
 
 export async function getUserProfile(): Promise<UserProfile | null> {
-  // const res = await fetch(`${BASE_URL}/users/me`)
-  // if (!res.ok) return null
-  // //console.log(await res.json())
-  // return await res.json()
-  return {} as UserProfile
+  const res = await fetch(`${BASE_URL}/users/me`)
+  if (!res.ok) return null
+  //console.log(await res.json())
+  return await res.json()
+  //return {} as UserProfile
+  // return mock.getUserProfile()
 }
 
 export async function saveUserProfile(
@@ -37,6 +43,20 @@ export async function saveUserProfile(
   }
 
   return await res.json()
+}
+
+export async function getAllUsers(): Promise<TeamMemberPreview[]> {
+  const res = await fetch(`${BASE_URL}/users`)
+  if (!res.ok) return []
+  const users = await res.json()
+  // Convert UserProfile data to TeamMemberPreview format
+  return users.map((user: any) => ({
+    userId: user.userId,
+    displayName: `${user.firstName} ${user.lastName}`,
+    major: user.major,
+    skills: user.skills || [],
+    compatibilityScore: 0, // You can calculate this later based on your matching algorithm
+  }))
 }
 
 // -------------------- PROJECT --------------------
@@ -90,7 +110,20 @@ export async function saveProjectPreferences(
 // -------------------- MOCKED (KEEP FOR NOW) --------------------
 
 export async function listPublicUserProfiles(): Promise<PublicUserProfile[]> {
-  return []
+  const res = await fetch(`${BASE_URL}/users`)
+  if (!res.ok) return []
+  const users = await res.json()
+  // Convert UserProfile data to PublicUserProfile format
+  return users.map((user: any) => ({
+    userId: user.userId,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    major: user.major,
+    skills: user.skills || [],
+    bio: user.bio,
+    availabilitySummary: user.availabilitySummary,
+  }))
 }
 
 export async function listCatalogProjects(): Promise<ProjectProfile[]> {

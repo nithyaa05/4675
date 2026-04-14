@@ -40,9 +40,17 @@ def save_user_profile():
 @app.route('/api/users/me', methods=['GET'])
 def get_user_profile():
     doc = db.collection('test').document('user_' + str(count)).get()  # Use the generated ID
+    print('getting user profile ' + doc.reference.id)
     if doc.exists:
         return jsonify(doc.to_dict())
     return jsonify(None), 404
+
+@app.route('/api/users', methods=['GET'])
+def get_all_users():
+    docs = db.collection('test').stream()
+    users = [{'userId': doc.id, **doc.to_dict()} for doc in docs]
+    #print(users)
+    return jsonify(users), 200
 
     
 # @app.route('/api/users/me', methods=['GET'])
