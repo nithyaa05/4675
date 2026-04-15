@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { UserProfile } from '../types'
+import type { UserProfile, TeamMemberPreview, ProjectProfile } from '../types'
 import * as api from '../api/peermatchApi'
 import { ChipToggle } from '../components/ChipToggle'
 import { SaveSuccessPanel } from '../components/SaveSuccessPanel'
@@ -9,28 +9,31 @@ import {
   createEmptyWeeklyAvailability,
   normalizeWeeklyAvailability,
 } from '../lib/availability'
-import { MOCK_ROSTER, SKILL_OPTIONS, WORKING_STYLES } from '../mocks/seedData'
+import { SKILL_OPTIONS, TEAM_ROLE_OPTIONS } from '../mocks/seedData'
 
 const emptyProfile: UserProfile = {
-  displayName: '',
+  firstName: '',
+  lastName: '',
   email: '',
   major: '',
   skills: [],
   weeklyAvailability: createEmptyWeeklyAvailability(),
-  workingStyle: WORKING_STYLES[0] ?? '',
+  // workingStyle: WORKING_STYLES[0] ?? '',
   preferredPeerIds: [],
+  preferredProjectIds: [],
+  teamRoles: [],
   bio: '',
 }
 
 function validate(p: UserProfile): string[] {
   const errs: string[] = []
-  if (!p.displayName.trim()) errs.push('Display name is required.')
+  if (!p.firstName.trim() && !p.lastName.trim()) errs.push('First and last name is required.')
   if (!p.email.trim()) errs.push('Email is required.')
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))
     errs.push('Enter a valid email (GT email when auth is enabled).')
   if (!p.major.trim()) errs.push('Major or program is required.')
   if (p.skills.length === 0) errs.push('Select at least one skill.')
-  if (!p.workingStyle) errs.push('Choose a working style.')
+  // if (!p.workingStyle) errs.push('Choose a working style.')
   if (countSelectedSlots(p.weeklyAvailability) === 0)
     errs.push(
       'Select at least one half-hour slot when you are free (any day—you do not need to fill every day).'
@@ -45,6 +48,8 @@ export function UserProfilePage() {
   const [saveError, setSaveError] = useState<string | null>(null)
   const [showThankYou, setShowThankYou] = useState(false)
   const [errors, setErrors] = useState<string[]>([])
+  const [users, setUsers] = useState<TeamMemberPreview[]>([])
+  const [projects, setProjects] = useState<ProjectProfile[]>([])
   const errorAnchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -55,6 +60,10 @@ export function UserProfilePage() {
       })
     }
   }, [errors])
+
+  useEffect(() => {
+    setProfile(emptyProfile)
+}, [])
 
   useEffect(() => {
     let cancelled = false
@@ -71,7 +80,15 @@ export function UserProfilePage() {
           weeklyAvailability: normalizeWeeklyAvailability(existing),
         })
       }
-      if (!cancelled) setLoading(false)
+      const [allUsers, allProjects] = await Promise.all([
+        api.getAllUsers(),
+        api.listCatalogProjects(),
+      ])
+      if (!cancelled) {
+        setUsers(allUsers)
+        setProjects(allProjects)
+        setLoading(false)
+      }
     })()
     return () => {
       cancelled = true
@@ -93,6 +110,24 @@ export function UserProfilePage() {
       preferredPeerIds: prev.preferredPeerIds.includes(id)
         ? prev.preferredPeerIds.filter((x) => x !== id)
         : [...prev.preferredPeerIds, id],
+    }))
+  }
+
+  const toggleProject = (id: string) => {
+    setProfile((prev) => ({
+      ...prev,
+      preferredProjectIds: (prev.preferredProjectIds ?? []).includes(id)
+        ? (prev.preferredProjectIds ?? []).filter((x) => x !== id)
+        : [...(prev.preferredProjectIds ?? []), id],
+    }))
+  }
+
+  const toggleTeamRole = (role: string) => {
+    setProfile((prev) => ({
+      ...prev,
+      teamRoles: (prev.teamRoles ?? []).includes(role)
+        ? (prev.teamRoles ?? []).filter((x) => x !== role)
+        : [...(prev.teamRoles ?? []), role],
     }))
   }
 
@@ -170,16 +205,29 @@ export function UserProfilePage() {
         )}
 
         <label className="field">
-          <span>Display name</span>
+          <span>First Name</span>
           <input
             required
-            value={profile.displayName}
+            value={profile.firstName}
             onChange={(e) =>
-              setProfile((p) => ({ ...p, displayName: e.target.value }))
+              setProfile((p) => ({ ...p, firstName: e.target.value }))
+            }
+            autoComplete="name"
+          />
+        
+        </label>
+                <label className="field">
+          <span>Last Name</span>
+          <input
+            required
+            value={profile.lastName}
+            onChange={(e) =>
+              setProfile((p) => ({ ...p, lastName: e.target.value }))
             }
             autoComplete="name"
           />
         </label>
+
 
         <label className="field">
           <span>Email</span>
@@ -220,6 +268,23 @@ export function UserProfilePage() {
           </div>
         </fieldset>
 
+        <fieldset className="field">
+          <legend>Team roles (optional)</legend>
+          <p className="field-help">
+            Select the roles you can fulfill on a team. This helps the matching algorithm form balanced teams.
+          </p>
+          <div className="chip-grid">
+            {TEAM_ROLE_OPTIONS.map((role) => (
+              <ChipToggle
+                key={role}
+                label={role}
+                selected={(profile.teamRoles ?? []).includes(role)}
+                onToggle={() => toggleTeamRole(role)}
+              />
+            ))}
+          </div>
+        </fieldset>
+
         <fieldset className="field field--availability">
           <legend>Weekly availability</legend>
           <p
@@ -241,7 +306,7 @@ export function UserProfilePage() {
           />
         </fieldset>
 
-        <label className="field">
+        {/* <label className="field">
           <span>Working style</span>
           <select
             value={profile.workingStyle}
@@ -255,7 +320,7 @@ export function UserProfilePage() {
               </option>
             ))}
           </select>
-        </label>
+        </label> */}
 
         <fieldset className="field">
           <legend>Peer preferences (optional)</legend>
@@ -264,12 +329,29 @@ export function UserProfilePage() {
             as a soft constraint alongside skills and availability.
           </p>
           <div className="chip-grid">
-            {MOCK_ROSTER.map((r) => (
+            {users.map((r) => (
               <ChipToggle
                 key={r.userId}
                 label={`${r.displayName} (${r.major})`}
                 selected={profile.preferredPeerIds.includes(r.userId)}
                 onToggle={() => togglePeer(r.userId)}
+              />
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset className="field">
+          <legend>Project preferences (optional)</legend>
+          <p className="field-help">
+            Select projects you are interested in working on. The matcher considers your project preferences when forming teams.
+          </p>
+          <div className="chip-grid">
+            {projects.map((p) => (
+              <ChipToggle
+                key={p.id}
+                label={p.title}
+                selected={(profile.preferredProjectIds ?? []).includes(p.id ?? '')}
+                onToggle={() => toggleProject(p.id ?? '')}
               />
             ))}
           </div>

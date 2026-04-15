@@ -13,11 +13,12 @@ export interface AvailabilityBlock {
 /** Directory / classmates view — omit sensitive fields as your API requires. */
 export interface PublicUserProfile {
   userId: string
-  displayName: string
+  firstName: string
+  lastName: string
   email?: string
   major: string
   skills: string[]
-  workingStyle: string
+  // workingStyle: string
   bio?: string
   /** Human-readable summary; detailed grid stays on full profile API if exposed */
   availabilitySummary?: string
@@ -25,7 +26,8 @@ export interface PublicUserProfile {
 
 export interface UserProfile {
   id?: string
-  displayName: string
+  firstName: string
+  lastName: string
   email: string
   major: string
   skills: string[]
@@ -34,9 +36,13 @@ export interface UserProfile {
    * true when free; other days/times stay false. Sparse schedules are valid.
    */
   weeklyAvailability: Record<DaySlot, boolean[]>
-  workingStyle: string
+  // workingStyle: string
   /** Peer user IDs or emails the student prefers */
   preferredPeerIds: string[]
+  /** Project IDs the student prefers */
+  preferredProjectIds?: string[]
+  /** Team roles the student can take on */
+  teamRoles?: string[]
   bio?: string
 }
 

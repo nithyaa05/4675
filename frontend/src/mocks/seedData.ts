@@ -6,15 +6,23 @@ import type {
 
 export const SKILL_OPTIONS = [
   'Python',
+  'Javascript',
   'React',
-  'UI/UX',
-  'ML',
-  'Databases',
-  'Cloud (AWS/GCP)',
-  'Research',
-  'Writing',
-  'Presentation',
-  'DevOps',
+  'Node.js',
+  'Java',
+  'C++',
+  'SQL',
+  'Machine Learning',
+]
+
+export const TEAM_ROLE_OPTIONS = [
+  'Designer (UI/UX)',
+  'Data Engineer',
+  'Data Analyst',
+  'Project Manager',
+  'Testing/Debugging',
+  'Programmer',
+  'Architect/System Designer',
 ]
 
 export const WORKING_STYLES = [
@@ -26,7 +34,7 @@ export const WORKING_STYLES = [
 
 export const MOCK_CATALOG: ProjectProfile[] = [
   {
-    id: 'p1',
+    id: 'proj_1',
     title: 'PeerMatch platform',
     courseCode: 'CS 4675',
     description:
@@ -37,7 +45,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Frontend', 'Backend', 'ML/Data'],
   },
   {
-    id: 'p2',
+    id: 'proj_2',
     title: 'Campus sustainability dashboard',
     courseCode: 'CS 4675',
     description:
@@ -48,7 +56,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Visualization', 'Data pipeline'],
   },
   {
-    id: 'p3',
+    id: 'proj_3',
     title: 'Adaptive tutoring chatbot',
     courseCode: 'CS 4675',
     description:
@@ -59,7 +67,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['NLP', 'Backend'],
   },
   {
-    id: 'p4',
+    id: 'proj_4',
     title: 'Smart campus occupancy & HVAC hints',
     courseCode: 'CS 4675',
     description:
@@ -70,7 +78,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Data', 'Backend', 'Visualization'],
   },
   {
-    id: 'p5',
+    id: 'proj_5',
     title: 'Study streaks & focus timer',
     courseCode: 'CS 4675',
     description:
@@ -81,7 +89,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Frontend', 'Product'],
   },
   {
-    id: 'p6',
+    id: 'proj_6',
     title: 'GT clubs & events aggregator',
     courseCode: 'CS 4675',
     description:
@@ -92,7 +100,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Full-stack', 'Integrations'],
   },
   {
-    id: 'p7',
+    id: 'proj_7',
     title: 'Accessible course notes companion',
     courseCode: 'CS 4675',
     description:
@@ -103,7 +111,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Frontend', 'A11y lead'],
   },
   {
-    id: 'p8',
+    id: 'proj_8',
     title: 'Recipe & pantry waste reducer',
     courseCode: 'CS 4675',
     description:
@@ -114,7 +122,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['ML', 'Mobile web'],
   },
   {
-    id: 'p9',
+    id: 'proj_9',
     title: 'Open-source bug triage assistant',
     courseCode: 'CS 4675',
     description:
@@ -125,7 +133,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['NLP', 'Backend'],
   },
   {
-    id: 'p10',
+    id: 'proj_10',
     title: 'Local volunteer matching',
     courseCode: 'CS 4675',
     description:
@@ -136,7 +144,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Full-stack', 'PM/Documentation'],
   },
   {
-    id: 'p11',
+    id: 'proj_11',
     title: 'Micro-internship board for CS majors',
     courseCode: 'CS 4675',
     description:
@@ -147,7 +155,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Backend', 'Frontend'],
   },
   {
-    id: 'p12',
+    id: 'proj_12',
     title: 'Civic data story: Atlanta transit',
     courseCode: 'CS 4675',
     description:
@@ -158,7 +166,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Visualization', 'Narrative'],
   },
   {
-    id: 'p13',
+    id: 'proj_13',
     title: 'Secure file drop for project teams',
     courseCode: 'CS 4675',
     description:
@@ -169,7 +177,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Security-minded backend', 'Infra'],
   },
   {
-    id: 'p14',
+    id: 'proj_14',
     title: 'Language exchange partner finder',
     courseCode: 'CS 4675',
     description:
@@ -180,7 +188,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Realtime features', 'Matching logic'],
   },
   {
-    id: 'p15',
+    id: 'proj_15',
     title: 'Lightweight multiplayer quiz arena',
     courseCode: 'CS 4675',
     description:
@@ -196,151 +204,166 @@ export const MOCK_CATALOG: ProjectProfile[] = [
 export const MOCK_PEER_DIRECTORY: PublicUserProfile[] = [
   {
     userId: 'u1',
-    displayName: 'Alex Chen',
+    firstName: 'Alex',
+    lastName: 'Chen',
     email: 'achen3@gatech.edu',
     major: 'Computer Science',
     skills: ['Python', 'ML', 'Research'],
-    workingStyle: 'Daily standups',
+    // workingStyle: 'Daily standups',
     bio: 'Interested in fairness in recommendation systems and collaborative ML.',
     availabilitySummary: 'Weekday afternoons, some Sat mornings',
   },
   {
     userId: 'u2',
-    displayName: 'Jordan Lee',
+    firstName: 'Jordan',
+    lastName: 'Lee',
     email: 'jlee82@gatech.edu',
     major: 'Computer Engineering',
     skills: ['React', 'UI/UX', 'DevOps'],
-    workingStyle: 'Async-first, documented updates',
+    // workingStyle: 'Async-first, documented updates',
     bio: 'Frontend-focused; happy to own design systems and deployment.',
     availabilitySummary: 'Tue/Thu evenings, Sun flexible',
   },
   {
     userId: 'u3',
-    displayName: 'Sam Rivera',
+    firstName: 'Sam',
+    lastName: 'Rivera',
     email: 'srivera7@gatech.edu',
     major: 'Computer Science',
     skills: ['Databases', 'Cloud (AWS/GCP)', 'Python'],
-    workingStyle: 'Independent chunks with merge points',
+    // workingStyle: 'Independent chunks with merge points',
     bio: 'Backend + infra; prefer clear API contracts early.',
     availabilitySummary: 'Mon–Wed after 3pm',
   },
   {
     userId: 'u4',
-    displayName: 'Taylor Kim',
+    firstName: 'Taylor',
+    lastName: 'Kim',
     email: 'tkim45@gatech.edu',
     major: 'Human-Computer Interaction',
     skills: ['UI/UX', 'Writing', 'Presentation'],
-    workingStyle: 'Pair programming friendly',
+    // workingStyle: 'Pair programming friendly',
     bio: 'User research and prototyping; can lead stakeholder demos.',
     availabilitySummary: 'Mornings + Friday afternoons',
   },
   {
     userId: 'u5',
-    displayName: 'Riley Patel',
+    firstName: 'Riley',
+    lastName: 'Patel',
     email: 'rpatel21@gatech.edu',
     major: 'Computer Science',
     skills: ['Python', 'DevOps', 'React'],
-    workingStyle: 'Daily standups',
+    // workingStyle: 'Daily standups',
     bio: 'Full-stack leaning; comfortable with CI and Docker.',
     availabilitySummary: 'Weeknights after 6pm',
   },
   {
     userId: 'u6',
-    displayName: 'Morgan Wu',
+    firstName: 'Morgan',
+    lastName: 'Wu',
     email: 'mwu9@gatech.edu',
     major: 'Computer Science',
     skills: ['ML', 'Python', 'Research'],
-    workingStyle: 'Async-first, documented updates',
+    // workingStyle: 'Async-first, documented updates',
     bio: 'NLP course projects; strong on evaluation metrics.',
     availabilitySummary: 'Flexible weekdays',
   },
   {
     userId: 'u7',
-    displayName: 'Casey Okonkwo',
+    firstName: 'Casey',
+    lastName: 'Okonkwo',
     email: 'cokonkwo4@gatech.edu',
     major: 'Computer Science',
     skills: ['React', 'Python', 'Databases'],
-    workingStyle: 'Pair programming friendly',
+    // workingStyle: 'Pair programming friendly',
     bio: 'Former TA for data structures; likes clear diagrams and test-driven habits.',
     availabilitySummary: 'Mon/Wed/Fri mornings',
   },
   {
     userId: 'u8',
-    displayName: 'Priya Desai',
+    firstName: 'Priya',
+    lastName: 'Desai',
     email: 'pdesai31@gatech.edu',
     major: 'Computer Science',
     skills: ['ML', 'Python', 'Presentation'],
-    workingStyle: 'Daily standups',
+    // workingStyle: 'Daily standups',
     bio: 'Computer vision hobbyist; wants a project with a strong demo video.',
     availabilitySummary: 'Tue/Thu all day, Sun pm',
   },
   {
     userId: 'u9',
-    displayName: 'Diego Morales',
+    firstName: 'Diego',
+    lastName: 'Morales',
     email: 'dmorales8@gatech.edu',
     major: 'Industrial Engineering',
     skills: ['Research', 'Writing', 'Python'],
-    workingStyle: 'Independent chunks with merge points',
+    // workingStyle: 'Independent chunks with merge points',
     bio: 'Optimization + OR background; happy to own spreadsheets and experiment design.',
     availabilitySummary: 'Late afternoons, no Friday labs',
   },
   {
     userId: 'u10',
-    displayName: 'Avery Brooks',
+    firstName: 'Avery Brooks',
+    lastName: 'Brooks',
     email: 'abrooks15@gatech.edu',
     major: 'Computer Engineering',
     skills: ['DevOps', 'Cloud (AWS/GCP)', 'Python'],
-    workingStyle: 'Async-first, documented updates',
+    // workingStyle: 'Async-first, documented updates',
     bio: 'Homelab nerd; Terraform, Kubernetes basics; wants infra-heavy projects.',
     availabilitySummary: 'Evenings + Saturday',
   },
   {
     userId: 'u11',
-    displayName: 'Linh Tran',
+    firstName: 'Linh',
+    lastName: 'Tran',
     email: 'ltran22@gatech.edu',
     major: 'Computer Science',
     skills: ['UI/UX', 'React', 'Writing'],
-    workingStyle: 'Pair programming friendly',
+    // workingStyle: 'Pair programming friendly',
     bio: 'Design minor; Figma daily; cares about motion and micro-interactions.',
     availabilitySummary: 'Campus days 10–4',
   },
   {
     userId: 'u12',
-    displayName: 'Ethan Frost',
+    firstName: 'Ethan',
+    lastName: 'Frost',
     email: 'efrost6@gatech.edu',
     major: 'Mathematics',
     skills: ['Python', 'ML', 'Research'],
-    workingStyle: 'Daily standups',
+    // workingStyle: 'Daily standups',
     bio: 'Stats + linear algebra strength; wants interpretable models over black boxes.',
     availabilitySummary: 'Flexible except exam weeks',
   },
   {
     userId: 'u13',
-    displayName: 'Jamal Haddad',
+    firstName: 'Jamal',
+    lastName: 'Haddad',
     email: 'jhaddad12@gatech.edu',
     major: 'Computer Science',
     skills: ['Databases', 'Python', 'DevOps'],
-    workingStyle: 'Independent chunks with merge points',
+    // workingStyle: 'Independent chunks with merge points',
     bio: 'SQL performance and migrations; prefers boring tech that ships.',
     availabilitySummary: 'Mon–Thu after 5pm',
   },
   {
     userId: 'u14',
-    displayName: 'Sofia Andersson',
+    firstName: 'Sofia',
+    lastName: 'Andersson',
     email: 'sandersson9@gatech.edu',
     major: 'Human-Computer Interaction',
     skills: ['UI/UX', 'Presentation', 'Research'],
-    workingStyle: 'Async-first, documented updates',
+    // workingStyle: 'Async-first, documented updates',
     bio: 'Qualitative studies + usability tests; can recruit participants on campus.',
     availabilitySummary: 'Wed/Fri blocked; other days open',
   },
   {
     userId: 'u15',
-    displayName: 'Marcus Webb',
+    firstName: 'Marcus',
+    lastName: 'Webb',
     email: 'mwebb44@gatech.edu',
     major: 'Computer Science',
     skills: ['React', 'Python', 'Cloud (AWS/GCP)'],
-    workingStyle: 'Daily standups',
+    // workingStyle: 'Daily standups',
     bio: 'Ex-intern at a fintech; interested in auth, RBAC, and audit trails.',
     availabilitySummary: 'Weekday lunch + evenings',
   },
