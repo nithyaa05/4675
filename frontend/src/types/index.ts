@@ -39,6 +39,10 @@ export interface UserProfile {
   // workingStyle: string
   /** Peer user IDs or emails the student prefers */
   preferredPeerIds: string[]
+  /** Project IDs the student prefers */
+  preferredProjectIds?: string[]
+  /** Team roles the student can take on */
+  teamRoles?: string[]
   bio?: string
 }
 

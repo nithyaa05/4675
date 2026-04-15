@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { UserProfile, TeamMemberPreview } from '../types'
+import type { UserProfile, TeamMemberPreview, ProjectProfile } from '../types'
 import * as api from '../api/peermatchApi'
 import { ChipToggle } from '../components/ChipToggle'
 import { SaveSuccessPanel } from '../components/SaveSuccessPanel'
@@ -9,7 +9,7 @@ import {
   createEmptyWeeklyAvailability,
   normalizeWeeklyAvailability,
 } from '../lib/availability'
-import { SKILL_OPTIONS } from '../mocks/seedData'
+import { SKILL_OPTIONS, TEAM_ROLE_OPTIONS } from '../mocks/seedData'
 
 const emptyProfile: UserProfile = {
   firstName: '',
@@ -20,6 +20,8 @@ const emptyProfile: UserProfile = {
   weeklyAvailability: createEmptyWeeklyAvailability(),
   // workingStyle: WORKING_STYLES[0] ?? '',
   preferredPeerIds: [],
+  preferredProjectIds: [],
+  teamRoles: [],
   bio: '',
 }
 
@@ -47,6 +49,7 @@ export function UserProfilePage() {
   const [showThankYou, setShowThankYou] = useState(false)
   const [errors, setErrors] = useState<string[]>([])
   const [users, setUsers] = useState<TeamMemberPreview[]>([])
+  const [projects, setProjects] = useState<ProjectProfile[]>([])
   const errorAnchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -77,9 +80,13 @@ export function UserProfilePage() {
           weeklyAvailability: normalizeWeeklyAvailability(existing),
         })
       }
-      const allUsers = await api.getAllUsers()
+      const [allUsers, allProjects] = await Promise.all([
+        api.getAllUsers(),
+        api.listCatalogProjects(),
+      ])
       if (!cancelled) {
         setUsers(allUsers)
+        setProjects(allProjects)
         setLoading(false)
       }
     })()
@@ -103,6 +110,24 @@ export function UserProfilePage() {
       preferredPeerIds: prev.preferredPeerIds.includes(id)
         ? prev.preferredPeerIds.filter((x) => x !== id)
         : [...prev.preferredPeerIds, id],
+    }))
+  }
+
+  const toggleProject = (id: string) => {
+    setProfile((prev) => ({
+      ...prev,
+      preferredProjectIds: (prev.preferredProjectIds ?? []).includes(id)
+        ? (prev.preferredProjectIds ?? []).filter((x) => x !== id)
+        : [...(prev.preferredProjectIds ?? []), id],
+    }))
+  }
+
+  const toggleTeamRole = (role: string) => {
+    setProfile((prev) => ({
+      ...prev,
+      teamRoles: (prev.teamRoles ?? []).includes(role)
+        ? (prev.teamRoles ?? []).filter((x) => x !== role)
+        : [...(prev.teamRoles ?? []), role],
     }))
   }
 
@@ -243,6 +268,23 @@ export function UserProfilePage() {
           </div>
         </fieldset>
 
+        <fieldset className="field">
+          <legend>Team roles (optional)</legend>
+          <p className="field-help">
+            Select the roles you can fulfill on a team. This helps the matching algorithm form balanced teams.
+          </p>
+          <div className="chip-grid">
+            {TEAM_ROLE_OPTIONS.map((role) => (
+              <ChipToggle
+                key={role}
+                label={role}
+                selected={(profile.teamRoles ?? []).includes(role)}
+                onToggle={() => toggleTeamRole(role)}
+              />
+            ))}
+          </div>
+        </fieldset>
+
         <fieldset className="field field--availability">
           <legend>Weekly availability</legend>
           <p
@@ -293,6 +335,23 @@ export function UserProfilePage() {
                 label={`${r.displayName} (${r.major})`}
                 selected={profile.preferredPeerIds.includes(r.userId)}
                 onToggle={() => togglePeer(r.userId)}
+              />
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset className="field">
+          <legend>Project preferences (optional)</legend>
+          <p className="field-help">
+            Select projects you are interested in working on. The matcher considers your project preferences when forming teams.
+          </p>
+          <div className="chip-grid">
+            {projects.map((p) => (
+              <ChipToggle
+                key={p.id}
+                label={p.title}
+                selected={(profile.preferredProjectIds ?? []).includes(p.id ?? '')}
+                onToggle={() => toggleProject(p.id ?? '')}
               />
             ))}
           </div>

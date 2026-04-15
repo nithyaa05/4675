@@ -15,6 +15,16 @@ export const SKILL_OPTIONS = [
   'Machine Learning',
 ]
 
+export const TEAM_ROLE_OPTIONS = [
+  'Designer (UI/UX)',
+  'Data Engineer',
+  'Data Analyst',
+  'Project Manager',
+  'Testing/Debugging',
+  'Programmer',
+  'Architect/System Designer',
+]
+
 export const WORKING_STYLES = [
   'Async-first, documented updates',
   'Daily standups',
@@ -24,7 +34,7 @@ export const WORKING_STYLES = [
 
 export const MOCK_CATALOG: ProjectProfile[] = [
   {
-    id: 'p1',
+    id: 'proj_1',
     title: 'PeerMatch platform',
     courseCode: 'CS 4675',
     description:
@@ -35,7 +45,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Frontend', 'Backend', 'ML/Data'],
   },
   {
-    id: 'p2',
+    id: 'proj_2',
     title: 'Campus sustainability dashboard',
     courseCode: 'CS 4675',
     description:
@@ -46,7 +56,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Visualization', 'Data pipeline'],
   },
   {
-    id: 'p3',
+    id: 'proj_3',
     title: 'Adaptive tutoring chatbot',
     courseCode: 'CS 4675',
     description:
@@ -57,7 +67,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['NLP', 'Backend'],
   },
   {
-    id: 'p4',
+    id: 'proj_4',
     title: 'Smart campus occupancy & HVAC hints',
     courseCode: 'CS 4675',
     description:
@@ -68,7 +78,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Data', 'Backend', 'Visualization'],
   },
   {
-    id: 'p5',
+    id: 'proj_5',
     title: 'Study streaks & focus timer',
     courseCode: 'CS 4675',
     description:
@@ -79,7 +89,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Frontend', 'Product'],
   },
   {
-    id: 'p6',
+    id: 'proj_6',
     title: 'GT clubs & events aggregator',
     courseCode: 'CS 4675',
     description:
@@ -90,7 +100,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Full-stack', 'Integrations'],
   },
   {
-    id: 'p7',
+    id: 'proj_7',
     title: 'Accessible course notes companion',
     courseCode: 'CS 4675',
     description:
@@ -101,7 +111,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Frontend', 'A11y lead'],
   },
   {
-    id: 'p8',
+    id: 'proj_8',
     title: 'Recipe & pantry waste reducer',
     courseCode: 'CS 4675',
     description:
@@ -112,7 +122,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['ML', 'Mobile web'],
   },
   {
-    id: 'p9',
+    id: 'proj_9',
     title: 'Open-source bug triage assistant',
     courseCode: 'CS 4675',
     description:
@@ -123,7 +133,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['NLP', 'Backend'],
   },
   {
-    id: 'p10',
+    id: 'proj_10',
     title: 'Local volunteer matching',
     courseCode: 'CS 4675',
     description:
@@ -134,7 +144,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Full-stack', 'PM/Documentation'],
   },
   {
-    id: 'p11',
+    id: 'proj_11',
     title: 'Micro-internship board for CS majors',
     courseCode: 'CS 4675',
     description:
@@ -145,7 +155,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Backend', 'Frontend'],
   },
   {
-    id: 'p12',
+    id: 'proj_12',
     title: 'Civic data story: Atlanta transit',
     courseCode: 'CS 4675',
     description:
@@ -156,7 +166,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Visualization', 'Narrative'],
   },
   {
-    id: 'p13',
+    id: 'proj_13',
     title: 'Secure file drop for project teams',
     courseCode: 'CS 4675',
     description:
@@ -167,7 +177,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Security-minded backend', 'Infra'],
   },
   {
-    id: 'p14',
+    id: 'proj_14',
     title: 'Language exchange partner finder',
     courseCode: 'CS 4675',
     description:
@@ -178,7 +188,7 @@ export const MOCK_CATALOG: ProjectProfile[] = [
     teamRoles: ['Realtime features', 'Matching logic'],
   },
   {
-    id: 'p15',
+    id: 'proj_15',
     title: 'Lightweight multiplayer quiz arena',
     courseCode: 'CS 4675',
     description:

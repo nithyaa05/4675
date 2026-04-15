@@ -127,7 +127,9 @@ export async function listPublicUserProfiles(): Promise<PublicUserProfile[]> {
 }
 
 export async function listCatalogProjects(): Promise<ProjectProfile[]> {
-  return []
+  const res = await fetch(`${BASE_URL}/projects`)
+  if (!res.ok) return []
+  return await res.json()
 }
 
 export async function getDashboard(): Promise<DashboardPayload> {
