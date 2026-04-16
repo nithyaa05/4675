@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import json
 
-with open('new_user_feature_vectors.json') as user_file:
+with open('new_user_feature_vector.json') as user_file:
     user_data = json.load(user_file)
 
 with open('project_feature_vectors.json') as project_file:
