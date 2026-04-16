@@ -69,7 +69,7 @@ def pairwise_compatibility_in_project(proj_id):
 
 
 # Compatibility Scores between
-for i in range(0,5): # 5 projects
+for i in range(0, project_scores.num_projs): # 5 projects
     proj_id = f'proj_{i}'
     pairwise_scores = pairwise_compatibility_in_project(proj_id)
     # print(proj_id)
