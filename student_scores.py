@@ -43,17 +43,6 @@ def user_compatibility_score(userA_id, userB_id):
     return final_score if final_score > 0 else 0.0
 
 
-
-# proj_assignments = {
-#  'proj_0': ['user_3', 'user_8', 'user_12', 'user_17', 'user_20', 'user_23'], 
-#  'proj_1': ['user_0', 'user_1', 'user_9', 'user_10'], 
-#  'proj_2': ['user_2', 'user_4', 'user_6', 'user_16', 'user_21'], 
-#  'proj_3': ['user_5', 'user_7', 'user_11', 'user_13', 'user_15', 'user_19', 'user_24'], 
-#  'proj_4': ['user_14', 'user_18', 'user_22']
-# }
-
-
-
 # Compute pairwise compatibility scores between each user in a project
 def pairwise_compatibility_in_project(proj_id):
     pairwise_scores = {}
