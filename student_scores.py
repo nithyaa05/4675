@@ -4,7 +4,7 @@ from sklearn.metrics import jaccard_score
 import json
 import project_scores
 
-with open('user_feature_vectors.json') as file:
+with open('new_user_feature_vectors.json') as file:
     data = json.load(file)
 
 # Compatibility Scores between Users
@@ -69,7 +69,7 @@ def pairwise_compatibility_in_project(proj_id):
 
 
 # Compatibility Scores between
-for i in range(0, project_scores.num_projs): # 5 projects
+for i in range(0, project_scores.num_projs):
     proj_id = f'proj_{i}'
     pairwise_scores = pairwise_compatibility_in_project(proj_id)
     # print(proj_id)
