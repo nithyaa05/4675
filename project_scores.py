@@ -2,11 +2,14 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import json
 
-with open('user_feature_vectors.json') as user_file:
+with open('new_user_feature_vectors.json') as user_file:
     user_data = json.load(user_file)
 
 with open('project_feature_vectors.json') as project_file:
     project_data = json.load(project_file)
+
+num_users = len(user_data)
+num_projs = len(project_data)
 
 # Project Compatibility Scores
 def project_compatibility_score(project_id, user_id):
@@ -38,7 +41,7 @@ assignments = {
     # 'user_j': {'project': int, 'score': float} 
 }
 
-for i in range(0,25):
+for i in range(0,num_users):
     user_id = f'user_{i}'
     final_score = 0.0
     final_proj = ''
@@ -52,7 +55,7 @@ for i in range(0,25):
 # print(assignments)
 
 # List of users for each project
-proj_assignments = {f'proj_{i}': [] for i in range(0,5)}
+proj_assignments = {f'proj_{i}': [] for i in range(0,num_projs)}
 
 for user_id, data in assignments.items():
     proj_id = f'proj_{data['project']}'
