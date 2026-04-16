@@ -4,7 +4,7 @@ from sklearn.metrics import jaccard_score
 import json
 import project_scores
 
-with open('new_user_feature_vectors.json') as file:
+with open('new_user_feature_vector.json') as file:
     data = json.load(file)
 
 # Compatibility Scores between Users
