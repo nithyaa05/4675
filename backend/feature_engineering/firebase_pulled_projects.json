@@ -1,0 +1,104 @@
+[
+    {
+        "proj_id": "proj_0",
+        "requiredSkills": [
+            "React",
+            "Python",
+            "Machine Learning"
+        ],
+        "id": "proj_0",
+        "teamSizeMin": 3,
+        "description": "Cloud-based team formation with profiles, preferences, and scalable matching.",
+        "courseCode": "CS 4675",
+        "teamSizeMax": 5,
+        "teamRoles": [
+            "Designer (UI/UX)",
+            "Programmer",
+            "Data Analyst"
+        ],
+        "title": "PeerMatch platform"
+    },
+    {
+        "proj_id": "proj_1",
+        "requiredSkills": [
+            "React",
+            "SQL",
+            "Machine Learning"
+        ],
+        "id": "proj_1",
+        "teamSizeMin": 4,
+        "description": "Visualize energy usage and student initiatives with public datasets.",
+        "courseCode": "CS 4675",
+        "teamSizeMax": 4,
+        "teamRoles": [
+            "Data Analyst",
+            "Data Engineer"
+        ],
+        "title": "Campus sustainability dashboard"
+    },
+    {
+        "proj_id": "proj_2",
+        "requiredSkills": [
+            "Javascript",
+            "Machine Learning",
+            "React"
+        ],
+        "id": "proj_2",
+        "teamSizeMin": 3,
+        "description": "AI-powered personalized learning with spaced repetition and NLP.",
+        "courseCode": "CS 4675",
+        "teamSizeMax": 4,
+        "teamRoles": [
+            "Data Analyst",
+            "Programmer",
+            "Designer (UI/UX)"
+        ],
+        "title": "Adaptive tutoring chatbot"
+    },
+    {
+        "proj_id": "proj_3",
+        "requiredSkills": [
+            "Python",
+            "Machine Learning",
+            "Data Analysis",
+            "Node.js",
+            "Javascript"
+        ],
+        "id": "proj_3",
+        "teamSizeMin": 1,
+        "description": "AI-driven solutions for real-time traffic management and optimization.",
+        "courseCode": "CS 4675",
+        "teamSizeMax": 5,
+        "teamRoles": [
+            "Data Analyst",
+            "Programmer",
+            "Designer (UI/UX)",
+            "Project Manager",
+            "Testing/Debugging"
+        ],
+        "title": "Smart city traffic optimization"
+    },
+    {
+        "proj_id": "proj_4",
+        "requiredSkills": [
+            "C++",
+            "Node.js",
+            "Data Analysis",
+            "SQL",
+            "Javascript"
+        ],
+        "id": "proj_4",
+        "teamSizeMin": 1,
+        "description": "C++-based AI for real-time strategy games, focusing on pathfinding, decision-making, and adaptive learning.",
+        "courseCode": "CS 4675",
+        "teamSizeMax": 5,
+        "teamRoles": [
+            "Architect/System Designer",
+            "Programmer",
+            "Designer (UI/UX)",
+            "Project Manager",
+            "Testing/Debugging"
+        ],
+        "title": "C++-based AI for real-time strategy games"
+    }
+]

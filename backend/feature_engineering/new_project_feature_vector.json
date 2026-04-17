@@ -1,0 +1,112 @@
+{
+    "proj_1": {
+        "skills_feature_vector": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+        ],
+        "team_role_feature_vector": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    "proj_2": {
+        "skills_feature_vector": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0
+        ],
+        "team_role_feature_vector": [
+            1,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+        ]
+    },
+    "proj_3": {
+        "skills_feature_vector": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+        ],
+        "team_role_feature_vector": [
+            1,
+            0,
+            1,
+            1,
+            1,
+            1,
+            0
+        ]
+    },
+    "proj_0": {
+        "skills_feature_vector": [
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+        ],
+        "team_role_feature_vector": [
+            1,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+        ]
+    },
+    "proj_4": {
+        "skills_feature_vector": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            0,
+            1
+        ],
+        "team_role_feature_vector": [
+            1,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1
+        ]
+    }
+}

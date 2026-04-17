@@ -66,9 +66,15 @@ def _serialize_project(doc: Any) -> dict[str, Any]:
 @app.route('/api/users/me', methods=['POST'])
 def save_user_profile():
     profile = request.get_json() or {}
+    #print(profile)
     doc_ref = db.collection(USERS_COLLECTION).document(_next_user_doc_id())
-    doc_ref.set(profile)
-    return jsonify({**profile, 'id': doc_ref.id}), 200
+    #print(f"Next user id': {_next_user_doc_id()}")
+    # Remove any existing id fields to avoid storing stale IDs in the document
+    clean_profile = {k: v for k, v in profile.items() if k not in ('id', 'userId', 'user_id')}
+    clean_profile['user_id'] = doc_ref.id
+    doc_ref.set(clean_profile)
+    #print("doc id", doc_ref.id)
+    return jsonify({**clean_profile, 'id': doc_ref.id}), 200
 
 @app.route('/api/users/me', methods=['GET'])
 def get_user_profile():

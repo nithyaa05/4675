@@ -5,7 +5,7 @@ import json
 with open('new_user_feature_vector.json') as user_file:
     user_data = json.load(user_file)
 
-with open('project_feature_vectors.json') as project_file:
+with open('new_project_feature_vector.json') as project_file:
     project_data = json.load(project_file)
 
 num_users = len(user_data)
