@@ -10,10 +10,13 @@ export function PeersDirectoryPage() {
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      const list = await api.listPublicUserProfiles()
-      if (!cancelled) {
-        setPeers(list)
-        setLoading(false)
+      try {
+        const list = await api.listPublicUserProfiles()
+        if (!cancelled) setPeers(list)
+      } catch {
+        if (!cancelled) setPeers([])
+      } finally {
+        if (!cancelled) setLoading(false)
       }
     })()
     return () => {

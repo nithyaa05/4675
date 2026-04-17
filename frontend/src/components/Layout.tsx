@@ -34,9 +34,13 @@ export function Layout() {
       </main>
       <footer className="app-footer">
         <span>
-          Mock data + localStorage until{' '}
-          <code className="inline-code">VITE_API_BASE_URL</code> points to your
-          API.
+          API base:{' '}
+          <code className="inline-code">
+            {import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000/api'}
+          </code>
+          . Start Flask on port 5000, or set{' '}
+          <code className="inline-code">VITE_API_BASE_URL</code> in{' '}
+          <code className="inline-code">frontend/.env</code>.
         </span>
       </footer>
     </div>

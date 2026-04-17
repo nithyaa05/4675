@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import json
+from get_data import num_users
+from get_data import num_projects
 
 with open('firebase_pulled_users.json') as file:
     data = json.load(file)
@@ -18,13 +20,14 @@ def create_feature_vector(user_num):
 
 # skills encoding
     # ordered list: [python, java, react, nodejs, sql, javascript, c++, machine_learning, data_analysis]
-    set_skill_list = ["Python", "Java", "React", "Node.js", "SQL", "JavaScript", "C++", "Machine Learning", "Data Analysis"]
+    set_skill_list = ["python", "java", "react", "node.js", "sql", "javascript", "c++", "machine learning", "data analysis"]
     # num_skills = len(set_skill_list)
 
     user_defined_skills = user_info['skills']
     skills_feature_vector = [0,0,0,0,0,0,0,0,0]
 
     for skill in user_defined_skills:
+        skill = skill.lower()
         index = set_skill_list.index(skill)
         skills_feature_vector[index] = 1 
 
@@ -47,7 +50,7 @@ def create_feature_vector(user_num):
 
 
     # # project pref encoding
-    project_pref_feature_vector = [0]*5
+    project_pref_feature_vector = [0]*num_projects
     user_defined_project_prefs = user_info['preferredProjectIds']
 
     for user in user_defined_project_prefs:
@@ -57,7 +60,7 @@ def create_feature_vector(user_num):
 
     # # user pref encoding
     #     # ordered list: [user0, user1, user2, user3... user49, user50]
-    user_pref_feature_vector = [0]*25
+    user_pref_feature_vector = [0]*num_users
     user_defined_user_prefs = user_info['preferredPeerIds']
 
     for user in user_defined_user_prefs:
@@ -97,7 +100,6 @@ def create_feature_vector(user_num):
     with open('new_user_feature_vector.json', 'w') as file:
         json.dump(data_list, file, indent=4)
 
-# create_feature_vector(9)
 for i in range(len(data)):
     create_feature_vector(i)
     # user = data['users'][i]

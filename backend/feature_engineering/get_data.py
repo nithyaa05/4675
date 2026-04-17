@@ -1,13 +1,14 @@
-import firebase_admin
-from firebase_admin import credentials, firestore
 import json
+from pathlib import Path
+import sys
 
-cred = credentials.Certificate("../peer-match-25263-223e121fb5d7.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+#gets all user and project data from firebase
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from firebase_client import get_db
+
+db = get_db()
 
 data = []
-current_users = []
 
 users_ref = db.collection("demo_users")
 docs = users_ref.stream()
@@ -20,3 +21,20 @@ for d in docs:
 # print(data[0])
 with open('firebase_pulled_users.json', 'w') as file:
     json.dump(data, file, indent=4)
+
+num_users = len(data)
+
+data = []
+
+project_ref = db.collection("demo_projects")
+docs = project_ref.stream()
+for d in docs:
+    project_dict = d.to_dict()
+    full_data = {"proj_id": d.id, **project_dict}
+    data.append(full_data)
+
+# print(data[0])
+with open('firebase_pulled_projects.json', 'w') as file:
+    json.dump(data, file, indent=4)
+
+num_projects = len(data)

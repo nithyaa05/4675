@@ -4,7 +4,7 @@ from sklearn.metrics import jaccard_score
 import json
 import project_scores
 
-with open('user_feature_vectors.json') as file:
+with open('backend/feature_engineering/new_user_feature_vector.json') as file:
     data = json.load(file)
 
 # Compatibility Scores between Users
@@ -43,17 +43,6 @@ def user_compatibility_score(userA_id, userB_id):
     return final_score if final_score > 0 else 0.0
 
 
-
-# proj_assignments = {
-#  'proj_0': ['user_3', 'user_8', 'user_12', 'user_17', 'user_20', 'user_23'], 
-#  'proj_1': ['user_0', 'user_1', 'user_9', 'user_10'], 
-#  'proj_2': ['user_2', 'user_4', 'user_6', 'user_16', 'user_21'], 
-#  'proj_3': ['user_5', 'user_7', 'user_11', 'user_13', 'user_15', 'user_19', 'user_24'], 
-#  'proj_4': ['user_14', 'user_18', 'user_22']
-# }
-
-
-
 # Compute pairwise compatibility scores between each user in a project
 def pairwise_compatibility_in_project(proj_id):
     pairwise_scores = {}
@@ -64,12 +53,12 @@ def pairwise_compatibility_in_project(proj_id):
         for j in range(i+1, n): 
             userB_id = users[j]
             # similarity_matrix[f'({userA_id}, {userB_id})'] = user_compatibility_score(userA_id, userB_id)
-            pairwise_scores[f'({int(userA_id.split('_')[1])}, {int(userB_id.split('_')[1])})'] = user_compatibility_score(userA_id, userB_id)
+            pairwise_scores[f"({int(userA_id.split('_')[1])}, {int(userB_id.split('_')[1])})"] = user_compatibility_score(userA_id, userB_id)
     return pairwise_scores
 
 
 # Compatibility Scores between
-for i in range(0,5): # 5 projects
+for i in range(0, project_scores.num_projs):
     proj_id = f'proj_{i}'
     pairwise_scores = pairwise_compatibility_in_project(proj_id)
     # print(proj_id)
@@ -95,6 +84,8 @@ def construct_similarity_matrix(users):
 
 # Clustering Students into Groups within Project Assignments: Greedy Algorithm + Group Balancing
 def cluster_students(users):
+    if not users:
+        return []
     similarity_matrix = construct_similarity_matrix(users)
 
     n = len(users)
@@ -144,10 +135,14 @@ def cluster_students(users):
     return [[users[i] for i in group if group] for group in new_groups]
 
 
-for proj_id, users in project_scores.proj_assignments.items():
-    groups = cluster_students(users)
+if __name__ == "__main__":
+    for i in range(0, project_scores.num_projs):
+        proj_id = f'proj_{i}'
+        pairwise_scores = pairwise_compatibility_in_project(proj_id)
 
-    print(f'\n{proj_id}:')
-    for group_id, members in enumerate(groups):
-        print(f'Group {group_id}: {members}' )
+    for proj_id, users in project_scores.proj_assignments.items():
+        groups = cluster_students(users)
+        print(f'\n{proj_id}:')
+        for group_id, members in enumerate(groups):
+            print(f'Group {group_id}: {members}' )
 

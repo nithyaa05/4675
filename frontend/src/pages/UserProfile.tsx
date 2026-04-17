@@ -68,26 +68,31 @@ export function UserProfilePage() {
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      const existing = await api.getUserProfile()
-      if (!cancelled && existing) {
-        const rest = {
-          ...(existing as UserProfile & { availability?: unknown }),
+      try {
+        const existing = await api.getUserProfile()
+        if (!cancelled && existing) {
+          const rest = {
+            ...(existing as UserProfile & { availability?: unknown }),
+          }
+          delete rest.availability
+          setProfile({
+            ...emptyProfile,
+            ...rest,
+            weeklyAvailability: normalizeWeeklyAvailability(existing),
+          })
         }
-        delete rest.availability
-        setProfile({
-          ...emptyProfile,
-          ...rest,
-          weeklyAvailability: normalizeWeeklyAvailability(existing),
-        })
-      }
-      const [allUsers, allProjects] = await Promise.all([
-        api.getAllUsers(),
-        api.listCatalogProjects(),
-      ])
-      if (!cancelled) {
-        setUsers(allUsers)
-        setProjects(allProjects)
-        setLoading(false)
+        const [allUsers, allProjects] = await Promise.all([
+          api.getAllUsers(),
+          api.listCatalogProjects(),
+        ])
+        if (!cancelled) {
+          setUsers(allUsers)
+          setProjects(allProjects)
+        }
+      } catch {
+        // Backend unreachable or fetch error — still show the form.
+      } finally {
+        if (!cancelled) setLoading(false)
       }
     })()
     return () => {

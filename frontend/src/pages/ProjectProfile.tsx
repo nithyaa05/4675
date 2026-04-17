@@ -40,9 +40,14 @@ export function ProjectProfilePage() {
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      const existing = await api.getProjectProfile()
-      if (!cancelled && existing) setProject({ ...empty, ...existing })
-      if (!cancelled) setLoading(false)
+      try {
+        const existing = await api.getProjectProfile()
+        if (!cancelled && existing) setProject({ ...empty, ...existing })
+      } catch {
+        // Backend unreachable — show empty form.
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
     })()
     return () => {
       cancelled = true
