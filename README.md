@@ -47,3 +47,11 @@ npm run dev
 Frontend runs at `http://localhost:5173`.
 
 The frontend calls `VITE_API_BASE_URL` (default: `http://localhost:5000/api`).
+
+Benchamrk Clustering Results:
+Dataset Size (Number of Users),Execution Time (seconds)
+10,0.1140
+50,2.9136
+100,11.9582
+250,76.2120
+500,307.5881
