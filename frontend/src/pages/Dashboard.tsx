@@ -35,10 +35,18 @@ export function DashboardPage() {
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      const d = await api.getDashboard()
-      if (!cancelled) {
-        setData(d)
-        setLoading(false)
+      try {
+        const d = await api.getDashboard()
+        if (!cancelled) setData(d)
+      } catch {
+        if (!cancelled)
+          setData({
+            userProfile: null,
+            assignment: null,
+            suggestedPeers: [],
+          })
+      } finally {
+        if (!cancelled) setLoading(false)
       }
     })()
     return () => {
@@ -48,9 +56,18 @@ export function DashboardPage() {
 
   const refresh = async () => {
     setLoading(true)
-    const d = await api.getDashboard()
-    setData(d)
-    setLoading(false)
+    try {
+      const d = await api.getDashboard()
+      setData(d)
+    } catch {
+      setData({
+        userProfile: null,
+        assignment: null,
+        suggestedPeers: [],
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   const runMatch = async () => {

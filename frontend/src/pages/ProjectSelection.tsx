@@ -10,10 +10,13 @@ export function ProjectSelectionPage() {
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      const list = await api.listCatalogProjects()
-      if (!cancelled) {
-        setProjects(list)
-        setLoading(false)
+      try {
+        const list = await api.listCatalogProjects()
+        if (!cancelled) setProjects(list)
+      } catch {
+        if (!cancelled) setProjects([])
+      } finally {
+        if (!cancelled) setLoading(false)
       }
     })()
     return () => {
