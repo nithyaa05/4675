@@ -16,7 +16,6 @@ def user_compatibility_score(userA_id, userB_id):
     userB_index = int(userB_id.split('_')[1]) # unique index
 
     # Skills: Complement of Cosine Similarity (want less overlap for diverse teams)
-    # Does cosine similarity take into account matching skill levels?
     skill_score = 1 - cosine_similarity([userA_profile['skills_feature_vector']], [userB_profile['skills_feature_vector']])[0][0]
 
     # Avaibility: Jaccard Similarity
@@ -52,7 +51,6 @@ def pairwise_compatibility_in_project(proj_id):
         userA_id = users[i]
         for j in range(i+1, n): 
             userB_id = users[j]
-            # similarity_matrix[f'({userA_id}, {userB_id})'] = user_compatibility_score(userA_id, userB_id)
             pairwise_scores[f'({int(userA_id.split('_')[1])}, {int(userB_id.split('_')[1])})'] = user_compatibility_score(userA_id, userB_id)
     return pairwise_scores
 
