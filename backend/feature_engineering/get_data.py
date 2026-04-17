@@ -1,10 +1,11 @@
-import firebase_admin
-from firebase_admin import credentials, firestore
 import json
+from pathlib import Path
+import sys
 
-cred = credentials.Certificate("../peer-match-25263-223e121fb5d7.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from firebase_client import get_db
+
+db = get_db()
 
 data = []
 current_users = []
