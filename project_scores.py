@@ -17,7 +17,7 @@ def project_compatibility_score(project_id, user_id):
     project_profile = project_data[project_id]
 
     # Project profile
-    project_vector = [0,0,0,0,0]
+    project_vector = np.zeros(num_projs, dtype=int)
     project_index = int(project_id.split('_')[1]) # unique index
     project_vector[project_index] = 1
 
