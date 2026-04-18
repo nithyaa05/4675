@@ -1,6 +1,5 @@
 import type { AvailabilityBlock, DaySlot } from '../types'
 
-/** First slot starts at 9:00; last slot is 20:30–21:00 (12 hours × 2 half-hours). */
 export const AVAILABILITY_START_HOUR = 9
 export const AVAILABILITY_END_HOUR = 21
 export const WEEKLY_SLOT_COUNT =

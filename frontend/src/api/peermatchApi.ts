@@ -1,4 +1,3 @@
-// src/api.ts
 
 import type {
   DashboardPayload,
