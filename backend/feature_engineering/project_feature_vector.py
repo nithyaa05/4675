@@ -1,9 +1,17 @@
 import numpy as np
 import pandas as pd
 import json
-from get_data import num_users
+from backend.feature_engineering.get_data import get_data
+from pathlib import Path
 
-with open('firebase_pulled_projects.json') as file:
+num_users, num_projects = get_data()
+
+BASE_DIR = Path(__file__).resolve().parent
+print(BASE_DIR)
+PROJECT_JSON = BASE_DIR / "new_project_feature_vector.json"
+FIREBASE_PROJECT_JSON = BASE_DIR / "firebase_pulled_projects.json"
+
+with open(FIREBASE_PROJECT_JSON) as file:
     data = json.load(file)
 
 def create_feature_vector(project_num):
@@ -39,12 +47,14 @@ def create_feature_vector(project_num):
     feature_vector_dictionary = {"skills_feature_vector": skills_feature_vector, 
                                  "team_role_feature_vector": teamRoles_feature_vector}
     # #print(feature_vector_dictionary)
-    with open('new_project_feature_vector.json', 'r') as file:
+    with open(PROJECT_JSON, 'r') as file:
         data_list = json.load(file)
     #data_list = {}
     data_list[proj_info['proj_id']] = feature_vector_dictionary
-    with open('new_project_feature_vector.json', 'w') as file:
+    with open(PROJECT_JSON, 'w') as file:
         json.dump(data_list, file, indent=4)
 
-for i in range(len(data)):
-    create_feature_vector(i)
+def create_project_feature_vectors():
+    for i in range(len(data)):
+        create_feature_vector(i)
+

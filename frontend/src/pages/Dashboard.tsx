@@ -26,6 +26,25 @@ function MemberCard({ m }: { m: TeamMemberPreview }) {
   )
 }
 
+function TeamCard({ team }: { team: NonNullable<DashboardPayload['allAssignments']>[number] }) {
+  return (
+    <article className="team-card panel panel--subtle">
+      <div className="team-card__head">
+        <h3>{team.projectTitle}</h3>
+        <p className="muted">
+          Team <code className="inline-code">{team.teamId}</code> · Project{' '}
+          <code className="inline-code">{team.projectId}</code>
+        </p>
+      </div>
+      <div className="member-grid">
+        {team.members.map((member) => (
+          <MemberCard key={member.userId} m={member} />
+        ))}
+      </div>
+    </article>
+  )
+}
+
 export function DashboardPage() {
   const [data, setData] = useState<DashboardPayload | null>(null)
   const [loading, setLoading] = useState(true)
@@ -75,7 +94,18 @@ export function DashboardPage() {
     setMatchMsg(null)
     try {
       const { jobId } = await api.triggerMatching()
-      setMatchMsg(`Matching job queued (${jobId}). Refresh when the pipeline finishes.`)
+      setMatchMsg(`Matching completed (${jobId}). Refreshing assignment...`)
+      
+      // Refresh dashboard after a short delay to fetch the new assignments
+      setTimeout(async () => {
+        try {
+          const d = await api.getDashboard()
+          setData(d)
+          setMatchMsg(`Team assignments updated successfully!`)
+        } catch {
+          setMatchMsg(`Matching completed but failed to fetch new assignments. Click Refresh to retry.`)
+        }
+      }, 1000)
     } catch (e) {
       setMatchMsg(e instanceof Error ? e.message : 'Request failed')
     } finally {
@@ -93,6 +123,9 @@ export function DashboardPage() {
 
   const assignment = data?.assignment
   const user = data?.userProfile
+  const otherTeams = data?.allAssignments?.filter(
+    (team) => team.teamId !== assignment?.teamId
+  )
 
   return (
     <div className="page dashboard">
@@ -183,6 +216,20 @@ export function DashboardPage() {
           </p>
         )}
       </section>
+
+      {otherTeams && otherTeams.length > 0 && (
+        <section className="panel">
+          <h2 className="panel__title">Other teams and projects</h2>
+          <p className="field-help">
+            See how the matcher grouped your classmates and which project each team was assigned.
+          </p>
+          <div className="team-grid">
+            {otherTeams.map((team) => (
+              <TeamCard key={team.teamId} team={team} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {data?.suggestedPeers && data.suggestedPeers.length > 0 && (
         <section className="panel">

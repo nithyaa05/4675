@@ -1,16 +1,20 @@
 import numpy as np
 import pandas as pd
 import json
-from get_data import num_users
-from get_data import num_projects
+from backend.feature_engineering.get_data import get_data
+from pathlib import Path
+# from get_data import num_users
+# from get_data import num_projects
 
-with open('firebase_pulled_users.json') as file:
+num_users, num_projects = get_data()
+
+BASE_DIR = Path(__file__).resolve().parent
+print(BASE_DIR)
+USER_JSON = BASE_DIR / "new_user_feature_vector.json"
+FIREBASE_USER_JSON = BASE_DIR / "firebase_pulled_users.json"
+
+with open(FIREBASE_USER_JSON) as file:
     data = json.load(file)
-# print(data[0])
-
-#change index to see different users
-# test_user_1 = data['users'][1]
-# print(test_user_1)
 
 def create_feature_vector(user_num):
 
@@ -80,27 +84,21 @@ def create_feature_vector(user_num):
         teamRoles_feature_vector[index] = 1
 
 
-    # # print(user_info['user_id'])
-    # # print("Skills feature vector", skills_feature_vector)
-    # # print("Availability feature vector", availability_feature_vector)
-    # # print("Project Preference feature vector", project_pref_feature_vector)
-    # # print("User preference feature vector", user_pref_feature_vector)
-    # # print("Team role feature vector", teamRoles_feature_vector)
-
     feature_vector_dictionary = {"skills_feature_vector": skills_feature_vector, 
                                  "availability_feature_vector": availability_feature_vector,
                                  "project_pref_feature_vector": project_pref_feature_vector,
                                  "user_pref_feature_vector": user_pref_feature_vector,
                                  "team_role_feature_vector": teamRoles_feature_vector}
     # #print(feature_vector_dictionary)
-    with open('new_user_feature_vector.json', 'r') as file:
+    with open(USER_JSON, 'r') as file:
         data_list = json.load(file)
     #data_list = {}
     data_list[user_info['user_id']] = feature_vector_dictionary
-    with open('new_user_feature_vector.json', 'w') as file:
+    with open(USER_JSON, 'w') as file:
         json.dump(data_list, file, indent=4)
 
-for i in range(len(data)):
-    create_feature_vector(i)
+def create_user_feature_vectors():
+    for i in range(len(data)):
+        create_feature_vector(i)
     # user = data['users'][i]
     # print(user)

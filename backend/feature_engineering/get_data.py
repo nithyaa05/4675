@@ -2,39 +2,52 @@ import json
 from pathlib import Path
 import sys
 
-#gets all user and project data from firebase
-sys.path.append(str(Path(__file__).resolve().parents[1]))
-from firebase_client import get_db
+global num_users, num_projs
 
-db = get_db()
+BASE_DIR = Path(__file__).resolve().parent
+#print(BASE_DIR)
+USER_JSON = BASE_DIR  / "firebase_pulled_users.json"
+PROJECT_JSON = BASE_DIR  / "firebase_pulled_projects.json"
 
-data = []
 
-users_ref = db.collection("demo_users")
-docs = users_ref.stream()
-for d in docs:
-    #print(d.id)
-    user_dict = d.to_dict()
-    full_data = {"user_id": d.id, **user_dict}
-    data.append(full_data)
+def get_data():
+    #gets all user and project data from firebase
+    sys.path.append(str(Path(__file__).resolve().parents[1]))
+    from firebase_client import get_db
 
-# print(data[0])
-with open('firebase_pulled_users.json', 'w') as file:
-    json.dump(data, file, indent=4)
+    db = get_db()
 
-num_users = len(data)
+    data = []
 
-data = []
+    users_ref = db.collection("demo_users")
+    docs = users_ref.stream()
+    for d in docs:
+        #print(d.id)
+        user_dict = d.to_dict()
+        full_data = {"user_id": d.id, **user_dict}
+        data.append(full_data)
 
-project_ref = db.collection("demo_projects")
-docs = project_ref.stream()
-for d in docs:
-    project_dict = d.to_dict()
-    full_data = {"proj_id": d.id, **project_dict}
-    data.append(full_data)
+    # print(data[0])
+    with open(USER_JSON, 'w') as file:
+        json.dump(data, file, indent=4)
 
-# print(data[0])
-with open('firebase_pulled_projects.json', 'w') as file:
-    json.dump(data, file, indent=4)
+    num_users = len(data)
 
-num_projects = len(data)
+    data = []
+
+    project_ref = db.collection("demo_projects")
+    docs = project_ref.stream()
+    for d in docs:
+        project_dict = d.to_dict()
+        full_data = {"proj_id": d.id, **project_dict}
+        data.append(full_data)
+
+    # print(data[0])
+    with open(PROJECT_JSON, 'w') as file:
+        json.dump(data, file, indent=4)
+
+    num_projects = len(data)
+    return (num_users, num_projects)
+
+if __name__ == "__main__":
+    get_data()

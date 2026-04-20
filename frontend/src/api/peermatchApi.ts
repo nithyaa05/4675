@@ -129,18 +129,44 @@ export async function listCatalogProjects(): Promise<ProjectProfile[]> {
   return await res.json()
 }
 
+export async function getAllAssignments(): Promise<TeamAssignment[]> {
+  const res = await fetch(`${BASE_URL}/match/assignments`)
+  if (!res.ok) return []
+  return await res.json()
+}
+
 export async function getDashboard(): Promise<DashboardPayload> {
-  const userProfile = await getUserProfile()
+  const [userProfile, assignment, allAssignments] = await Promise.all([
+    getUserProfile(),
+    getUserAssignment(),
+    getAllAssignments(),
+  ])
 
   return {
     userProfile,
-    assignment: null as TeamAssignment | null,
+    assignment,
+    allAssignments,
     suggestedPeers: [],
   }
 }
 
 export async function triggerMatching(): Promise<{ jobId: string }> {
-  return { jobId: `job-${Date.now()}` }
+  const res = await fetch(`${BASE_URL}/match/run`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  if (!res.ok) {
+    throw new Error('Failed to trigger matching')
+  }
+
+  return await res.json()
+}
+
+export async function getUserAssignment(): Promise<TeamAssignment | null> {
+  const res = await fetch(`${BASE_URL}/users/me/assignment`)
+  if (!res.ok) return null
+  return await res.json()
 }
 
 // /**

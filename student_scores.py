@@ -3,9 +3,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import jaccard_score
 import json
 import project_scores
+from pathlib import Path
 
-with open('backend/feature_engineering/new_user_feature_vector.json') as file:
+BASE_DIR = Path(__file__).resolve().parent
+#print(BASE_DIR)
+USER_JSON = BASE_DIR / "backend" / "feature_engineering" / "new_user_feature_vector.json"
+
+
+
+with open(USER_JSON) as file:
     data = json.load(file)
+
+
+assignments = project_scores.generate_project_assignments()
 
 # Compatibility Scores between Users
 def user_compatibility_score(userA_id, userB_id):
@@ -46,7 +56,7 @@ def user_compatibility_score(userA_id, userB_id):
 # Compute pairwise compatibility scores between each user in a project
 def pairwise_compatibility_in_project(proj_id):
     pairwise_scores = {}
-    users = project_scores.proj_assignments[proj_id]
+    users = assignments[proj_id]
     n = len(users)
     for i in range(0, n):
         userA_id = users[i]
@@ -54,8 +64,28 @@ def pairwise_compatibility_in_project(proj_id):
             userB_id = users[j]
             # similarity_matrix[f'({userA_id}, {userB_id})'] = user_compatibility_score(userA_id, userB_id)
             pairwise_scores[f"({int(userA_id.split('_')[1])}, {int(userB_id.split('_')[1])})"] = user_compatibility_score(userA_id, userB_id)
+    #print(pairwise_scores)
     return pairwise_scores
 
+
+#compatibility scores for assigned group
+def compute_team_pairwise_scores(group):
+    scores = {}
+
+    for i in range(len(group)):
+        user_a = group[i]
+        scores[user_a] = {}
+
+        for j in range(len(group)):
+            user_b = group[j]
+
+            if user_a == user_b:
+                continue
+
+            score = user_compatibility_score(user_a, user_b)
+            scores[user_a][user_b] = round(score, 3)
+
+    return scores
 
 # Compatibility Scores between
 for i in range(0, project_scores.num_projs):
@@ -139,10 +169,15 @@ if __name__ == "__main__":
     for i in range(0, project_scores.num_projs):
         proj_id = f'proj_{i}'
         pairwise_scores = pairwise_compatibility_in_project(proj_id)
-
-    for proj_id, users in project_scores.proj_assignments.items():
+    
+    #assignments = project_scores.generate_project_assignments().items()
+    
+    for proj_id, users in assignments.items():
+        #print(proj_id, users)
         groups = cluster_students(users)
+        #print('group:' ,groups)
         print(f'\n{proj_id}:')
         for group_id, members in enumerate(groups):
             print(f'Group {group_id}: {members}' )
+            #print(f'Pairwise Compatibility Scores: {compute_team_pairwise_scores(members)}')
 

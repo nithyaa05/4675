@@ -1,11 +1,23 @@
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import json
+from pathlib import Path
+from backend.feature_engineering.user_feature_vector import create_user_feature_vectors
+from backend.feature_engineering.project_feature_vector import create_project_feature_vectors
 
-with open('backend/feature_engineering/new_user_feature_vector.json') as user_file:
+create_project_feature_vectors()
+create_user_feature_vectors()
+
+
+BASE_DIR = Path(__file__).resolve().parent
+print(BASE_DIR)
+USER_JSON = BASE_DIR / "backend" / "feature_engineering" / "new_user_feature_vector.json"
+PROJECT_JSON = BASE_DIR / "backend" / "feature_engineering" / "new_project_feature_vector.json"
+
+with open(USER_JSON) as user_file:
     user_data = json.load(user_file)
 
-with open('backend/feature_engineering/new_project_feature_vector.json') as project_file:
+with open(PROJECT_JSON) as project_file:
     project_data = json.load(project_file)
 
 num_users = len(user_data)
@@ -38,22 +50,55 @@ def project_compatibility_score(project_id, user_id):
 # 'user_j': {'project': int, 'score': float} 
 assignments = {}
 
-# List of users for each project
-proj_assignments = {f'proj_{i}': [] for i in range(0,num_projs)}
-if __name__ == "__main__":
-    for i in range(0,num_users):
+def generate_project_assignments():
+    global assignments, proj_assignments
+
+    assignments = {}
+    proj_assignments = {f'proj_{i}': [] for i in range(num_projs)}
+
+    for i in range(num_users):
         user_id = f'user_{i}'
         final_score = 0.0
         final_proj = ''
-        for j in range(0,num_projs):
+
+        for j in range(num_projs):
             proj_id = f'proj_{j}'
             score = project_compatibility_score(proj_id, user_id)
+
             if score > final_score:
                 final_score = score
                 final_proj = j
-        assignments[user_id] = {'project': final_proj, 'score': final_score}
+
+        assignments[user_id] = {
+            'project': final_proj,
+            'score': final_score
+        }
 
     for user_id, data in assignments.items():
-        # CHANGE: Fixed syntax error by using double quotes around the dictionary key
         proj_id = f'proj_{data["project"]}'
         proj_assignments[proj_id].append(user_id)
+
+    return proj_assignments
+# List of users for each project
+# proj_assignments = {f'proj_{i}': [] for i in range(0,num_projs)}
+if __name__ == "__main__":
+    proj_assignments = generate_project_assignments()
+    #print(proj_assignments)
+    # for i in range(0,num_users):
+    #     user_id = f'user_{i}'
+    #     final_score = 0.0
+    #     final_proj = ''
+    #     for j in range(0,num_projs):
+    #         proj_id = f'proj_{j}'
+    #         score = project_compatibility_score(proj_id, user_id)
+    #         if score > final_score:
+    #             final_score = score
+    #             final_proj = j
+    #     assignments[user_id] = {'project': final_proj, 'score': final_score}
+
+    # for user_id, data in assignments.items():
+    #     # CHANGE: Fixed syntax error by using double quotes around the dictionary key
+    #     proj_id = f'proj_{data["project"]}'
+    #     proj_assignments[proj_id].append(user_id)
+    #     #print(f"{user_id} assigned to {proj_id} with score {data['score']:.4f}")
+    # print(proj_assignments)

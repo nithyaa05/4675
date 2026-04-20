@@ -18,9 +18,7 @@ export interface PublicUserProfile {
   email?: string
   major: string
   skills: string[]
-  // workingStyle: string
   bio?: string
-  /** Human-readable summary; detailed grid stays on full profile API if exposed */
   availabilitySummary?: string
 }
 
@@ -36,12 +34,8 @@ export interface UserProfile {
    * true when free; other days/times stay false. Sparse schedules are valid.
    */
   weeklyAvailability: Record<DaySlot, boolean[]>
-  // workingStyle: string
-  /** Peer user IDs or emails the student prefers */
   preferredPeerIds: string[]
-  /** Project IDs the student prefers */
   preferredProjectIds?: string[]
-  /** Team roles the student can take on */
   teamRoles?: string[]
   bio?: string
 }
@@ -54,7 +48,6 @@ export interface ProjectProfile {
   requiredSkills: string[]
   teamSizeMin: number
   teamSizeMax: number
-  /** Optional roles the course wants represented */
   teamRoles?: string[]
 }
 
@@ -92,6 +85,7 @@ export interface TeamAssignment {
 export interface DashboardPayload {
   userProfile: UserProfile | null
   assignment: TeamAssignment | null
+  allAssignments?: TeamAssignment[]
   /** Suggested matches before final assignment (optional) */
   suggestedPeers?: TeamMemberPreview[]
 }
