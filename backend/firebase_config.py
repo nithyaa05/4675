@@ -8,7 +8,6 @@ from firebase_admin import firestore
 
 from firebase_client import get_db
 
-# Add parent directory to path to import student_scores
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 db = get_db()
@@ -75,7 +74,6 @@ def save_user_profile():
     #print(profile)
     doc_ref = db.collection(USERS_COLLECTION).document(_next_user_doc_id())
     #print(f"Next user id': {_next_user_doc_id()}")
-    # Remove any existing id fields to avoid storing stale IDs in the document
     clean_profile = {k: v for k, v in profile.items() if k not in ('id', 'userId', 'user_id')}
     clean_profile['user_id'] = doc_ref.id
     doc_ref.set(clean_profile)
@@ -149,7 +147,6 @@ def save_preferences():
     return jsonify(prefs), 200
 
 #UPDATE THIS!!!
-# -------------------- MATCHING --------------------
 
 @app.route('/api/match/run', methods=['POST'])
 def trigger_matching():
@@ -158,19 +155,15 @@ def trigger_matching():
     Uses the student_scores clustering logic to form teams.
     """
     try:
-        # Import matching functions
         import student_scores
         import project_scores
-        
-        # Get all users from the database
+
         user_docs = db.collection(USERS_COLLECTION).stream()
         users_by_id = {doc.id: doc.to_dict() or {} for doc in user_docs}
         
-        # Get all projects from the database
         project_docs = db.collection(PROJECTS_COLLECTION).stream()
         projects_by_id = {doc.id: _serialize_project(doc) for doc in project_docs}
-        
-        # Build assignments using student_scores clustering logic
+
         # For now, use the pre-computed assignments from project_scores
         #assignments = {}  # user_id -> team info
         assignments = {}
