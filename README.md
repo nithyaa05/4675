@@ -4,6 +4,8 @@
 
 ### 1) Firebase service account key (required)
 
+Create a Firebase Firestore database for this project. 
+
 1. Open Firebase Console for your class project.
 2. Go to **Project settings -> Service accounts**.
 3. Generate and download a new private key JSON for your own account.
@@ -27,12 +29,12 @@ python firebase_config.py
 
 Backend runs at `http://localhost:5000` with API routes under `/api`.
 
-Optional: seed project documents in Firestore:
+Optional: seed sample data in Firestore:
 
 ```bash
 cd backend
 source .venv/bin/activate
-python seed_demo_projects.py
+python seed_demo_data.py
 ```
 
 ### 3) Frontend (Vite + React)
